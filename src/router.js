@@ -20,10 +20,13 @@ class Router{
   }
 
   render(pageName){
-    console.log("Trying to render " + pageName);
-    this.clearPage();
-    getHTML('views/' + pageName + '.html', function(data){
-      document.getElementById('notepadapp').innerHTML = data;
+    return new Promise(resolve => {
+      console.log("Trying to render " + pageName);
+      this.clearPage();
+      getHTML('views/' + pageName + '.html', (data) => {
+        document.getElementById(this.el).innerHTML = data;
+        resolve('resolved');
+      })
     })
   }
 

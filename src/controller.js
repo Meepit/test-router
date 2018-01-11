@@ -1,5 +1,6 @@
 class Controller{
-  constructor(router = new Router){
+  constructor(router){
+    router = (router || new Router)
     this.router = router;
     window.onhashchange = this.hashChanged.bind(this);
     this.hashChanged();
@@ -8,12 +9,12 @@ class Controller{
     console.log(window.location.hash);
     if(window.location.hash.length > 0){
       var pageName = window.location.hash.substr(1);
-      this.loadPageController(pageName);
+      this.loadPageController(pageName, 'get');
     }
   }
 
-  loadPageController(pageName){
-    pageName = "get_" + pageName
+  loadPageController(pageName, reqType){
+    pageName = reqType + "_" + pageName
     console.log(pageName);
     // Execute if a method matching pageName exists else pagenotfound
     try{
@@ -24,23 +25,31 @@ class Controller{
     };
   }
 
-  get_notes(){
+  async get_notes(){
     console.log("On the notes page");
-    this.router.render('notes')
+    await this.router.render('notes')
   }
 
-  get_contact(){
-    console.log("On the contact page");
-    this.router.render('contact');
+  async get_counter(){
+    console.log("On the counter page");
+    await this.router.render('counter');
+    document.getElementById("count").innerHTML = counter.number
   }
 
   get_PageNotFound(){
     console.log("page not found");
     this.router.render('not_found');
   }
+
+  async get_counterIncrease() {
+    counter.increment()
+    // await this.router.render('notes')
+    await this.get_counter()
+    window.location.hash = "counter"
+  }
 }
 
 window.onload = function(){
-  var controller = new Controller(new Router('notepadapp'));
+  var controller = new Controller(new Router('counterapp'));
   console.log(controller);
 }
