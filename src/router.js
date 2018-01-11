@@ -19,12 +19,13 @@ class Router{
     this.el = el;
   }
 
-  render(pageName){
+  render(pageName, context){
     return new Promise(resolve => {
       console.log("Trying to render " + pageName);
       this.clearPage();
       getHTML('views/' + pageName + '.html', (data) => {
-        document.getElementById(this.el).innerHTML = data;
+        template.evaluateHTML(data, context)
+        document.getElementById(this.el).innerHTML = template.html
         resolve('resolved');
       })
     })

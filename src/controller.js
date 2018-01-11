@@ -32,7 +32,7 @@ class Controller{
 
   async get_counter(){
     console.log("On the counter page");
-    await this.router.render('counter');
+    await this.router.render('counter', { counter: counter.number.toString() });
     document.getElementById("count").innerHTML = counter.number
   }
 
